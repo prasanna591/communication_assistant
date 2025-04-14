@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import "./Dashboard.css";
+
 import {
   Trophy,
   BookOpen,
@@ -15,13 +17,13 @@ import {
 
 // Mock data (remains the same)
 const mockUserData = {
-  name: "John Doe",
-  level: 25,
-  progress: 62, // Percentage
+  name: "Prasanna",
+  level: 10,
+  progress: 25, // Percentage
   facialExpressionScore: 85,
   bodyLanguageScore: 78,
-  speechQualityScore: 92,
-  pacingScore: 88,
+  speechQualityScore: 65,
+  pacingScore: 70,
   badges: [
     {
       name: "First Steps",
@@ -187,7 +189,7 @@ const Dashboard = () => {
               <div>
                 <button className="button button-yellow">
                   <Zap />
-                  Boost Your Progress
+                  <Link to="/test-analysis">Boost Your Progress</Link>
                 </button>
               </div>
             </div>
@@ -247,7 +249,7 @@ const Dashboard = () => {
                   </p>
                   <button className="button button-red">
                     <BookOpen />
-                    Enroll Now
+                    <Link to="/learn">Enroll Now</Link>
                   </button>
                 </>
               ) : (

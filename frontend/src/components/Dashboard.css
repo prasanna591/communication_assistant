@@ -431,10 +431,18 @@
 /* Community card grid column span */
 .md-col-span-2 {
   display: inline;
-  /* Applied via media query grid-template-columns */
+  
 }
 @media (min-width: 768px) {
   .md-col-span-2 {
     grid-column: span 2 / span 2;
   }
+}
+.button-yellow a {
+  text-decoration: none;
+  color: wheat;
+}
+.button-red a {
+  text-decoration: none;
+  color: wheat;
 }
