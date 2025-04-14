@@ -1,32 +1,28 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import "./TestAnalysis.css"; // Optional: Add some basic CSS
+import "./TestAnalysis.css";
 
 function TestAnalysis() {
-  // State Variables
-  const [status, setStatus] = useState("idle"); // idle, recording, uploading, processing, success, error
+  const [status, setStatus] = useState("idle");
   const [analysisResult, setAnalysisResult] = useState(null);
   const [error, setError] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null); // For uploaded file
-  const [analysisType, setAnalysisType] = useState("interview"); // Default selection
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [analysisType, setAnalysisType] = useState("interview");
 
-  // Refs for media handling
   const mediaRecorder = useRef(null);
   const recordedChunks = useRef([]);
-  const videoRef = useRef(null); // For live preview
+  const videoRef = useRef(null);
   const streamRef = useRef(null);
-  const fileInputRef = useRef(null); // To trigger file input programmatically
-
-  // --- Recording Logic ---
+  const fileInputRef = useRef(null);
 
   const startRecording = async () => {
-    if (status === "recording") return; // Prevent double-clicks
+    if (status === "recording") return;
 
     setStatus("recording");
     setError(null);
     setAnalysisResult(null);
-    setSelectedFile(null); // Clear any selected file
-    recordedChunks.current = []; // Reset chunks
+    setSelectedFile(null);
+    recordedChunks.current = [];
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -34,22 +30,20 @@ function TestAnalysis() {
         audio: true,
       });
 
-      streamRef.current = stream; // Store stream for cleanup
+      streamRef.current = stream;
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.muted = true; // Mute preview to prevent feedback loop
-        videoRef.current.play().catch(console.error); // Start playing the preview
+        videoRef.current.muted = true;
+        videoRef.current.play().catch(console.error);
       }
 
-      // Choose a MIME type supported by the browser and backend
       const options = { mimeType: "video/webm;codecs=vp8,opus" };
       try {
         mediaRecorder.current = new MediaRecorder(stream, options);
       } catch (e1) {
         console.warn("WebM with VP8/Opus failed, trying default:", e1.message);
         try {
-          // Fallback to browser default (often webm/vp9 or mp4)
           mediaRecorder.current = new MediaRecorder(stream);
         } catch (e2) {
           console.error("MediaRecorder creation failed:", e2);
@@ -57,7 +51,7 @@ function TestAnalysis() {
             "Could not create MediaRecorder. Your browser might not support recording."
           );
           setStatus("error");
-          stopStreamTracks(); // Clean up stream
+          stopStreamTracks();
           return;
         }
       }
@@ -72,10 +66,10 @@ function TestAnalysis() {
       mediaRecorder.current.onstop = () => {
         console.log("Recording stopped, processing data...");
         const blob = new Blob(recordedChunks.current, {
-          type: mediaRecorder.current.mimeType || "video/webm", // Use recorded mimeType or default
+          type: mediaRecorder.current.mimeType || "video/webm",
         });
-        recordedChunks.current = []; // Clear chunks after creating blob
-        analyzeVideo(blob, "recording.webm"); // Send data to backend
+        recordedChunks.current = [];
+        analyzeVideo(blob, "recording.webm");
       };
 
       mediaRecorder.current.onerror = (event) => {
@@ -84,10 +78,10 @@ function TestAnalysis() {
           `Recording error: ${event.error.name} - ${event.error.message}`
         );
         setStatus("error");
-        stopRecording(); // Attempt to stop cleanly
+        stopRecording();
       };
 
-      mediaRecorder.current.start(1000); // Record in chunks (optional, good for streaming/memory)
+      mediaRecorder.current.start(1000);
       console.log("Recording started");
     } catch (err) {
       console.error("Error accessing media devices:", err);
@@ -119,51 +113,37 @@ function TestAnalysis() {
       console.log("Camera/Audio stream stopped.");
     }
     if (videoRef.current) {
-      videoRef.current.srcObject = null; // Clear preview
+      videoRef.current.srcObject = null;
     }
   }, []);
 
   const stopRecording = useCallback(() => {
     if (mediaRecorder.current && status === "recording") {
       try {
-        mediaRecorder.current.stop(); // This triggers the onstop event
-        // Don't set status immediately, wait for onstop to call analyzeVideo
+        mediaRecorder.current.stop();
       } catch (error) {
         console.error("Error stopping recorder:", error);
         setError("Failed to stop recording cleanly.");
-        setStatus("error"); // Set error if stop fails unexpectedly
+        setStatus("error");
       }
     }
-    stopStreamTracks(); // Stop camera tracks regardless of recorder state
-  }, [status, stopStreamTracks]); // Add dependencies
-
-  // --- Upload Logic ---
+    stopStreamTracks();
+  }, [status, stopStreamTracks]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // Basic validation (optional, can be more robust)
       if (!file.type.startsWith("video/")) {
         setError("Invalid file type. Please select a video file.");
         setSelectedFile(null);
-        event.target.value = null; // Reset file input
+        event.target.value = null;
         return;
       }
       setSelectedFile(file);
-      setError(null); // Clear previous errors
-      setAnalysisResult(null); // Clear previous results
-      setStatus("idle"); // Ready to analyze uploaded file
+      setError(null);
+      setAnalysisResult(null);
+      setStatus("idle");
       console.log("File selected:", file.name);
-
-      // Optional: Preview uploaded video
-      // const videoURL = URL.createObjectURL(file);
-      // if (videoRef.current) {
-      //   videoRef.current.srcObject = null; // Ensure no stream is playing
-      //   videoRef.current.src = videoURL;
-      //   videoRef.current.muted = false; // Allow playback with sound
-      //   videoRef.current.play().catch(console.error);
-      //   // Remember to revoke URL later: URL.revokeObjectURL(videoURL);
-      // }
     }
   };
 
@@ -184,8 +164,6 @@ function TestAnalysis() {
     console.log("Analysis type selected:", event.target.value);
   };
 
-  // --- Backend Communication ---
-
   const analyzeVideo = async (videoData, filename) => {
     if (!videoData) {
       setError("No video data to analyze.");
@@ -194,7 +172,7 @@ function TestAnalysis() {
 
     const formData = new FormData();
     formData.append("video", videoData, filename);
-    formData.append("analysis_type", analysisType); // Include analysis type
+    formData.append("analysis_type", analysisType);
 
     setStatus("processing"); // Indicate upload/analysis start
     setError(null);
@@ -202,23 +180,14 @@ function TestAnalysis() {
     console.log(`Sending ${filename} to backend...`);
 
     try {
-      // Make sure this URL matches your Flask backend endpoint
       const response = await fetch("http://localhost:5000/api/analyze", {
         method: "POST",
         body: formData,
-        // Headers might not be needed as FormData sets Content-Type automatically
-        // headers: { 'Content-Type': 'multipart/form-data' }, // Let browser set this with boundary
       });
 
-      // Log raw response text for debugging if needed
-      // const responseText = await response.text();
-      // console.log("Raw backend response:", responseText);
-      // const data = JSON.parse(responseText); // Parse manually if needed
-
-      const data = await response.json(); // Assume backend sends JSON
+      const data = await response.json();
 
       if (!response.ok) {
-        // Try to get error message from backend response body
         const errorMsg =
           data?.error ||
           data?.message ||
@@ -227,11 +196,11 @@ function TestAnalysis() {
       }
 
       console.log("Analysis successful:", data);
-      setAnalysisResult(data); // Store the full JSON result
+      setAnalysisResult(data);
       setStatus("success");
     } catch (err) {
       console.error("Error sending data to backend:", err);
-      // More specific error handling
+
       if (err.message.includes("Failed to fetch")) {
         setError(
           "Network Error: Could not connect to the analysis server. Is it running?"
@@ -240,17 +209,13 @@ function TestAnalysis() {
         setError(`Analysis Failed: ${err.message}`);
       }
       setStatus("error");
-      setAnalysisResult(null); // Clear results on error
+      setAnalysisResult(null);
     } finally {
-      // Clean up selected file state? Maybe not, user might want to retry.
-      // setSelectedFile(null); // Uncomment if you want to clear selection after attempt
-      if (fileInputRef.current) fileInputRef.current.value = null; // Reset file input visually
+      if (fileInputRef.current) fileInputRef.current.value = null;
     }
   };
 
-  // --- Effect for Cleanup ---
   useEffect(() => {
-    // This function will be called when the component unmounts
     return () => {
       console.log("TestAnalysis unmounting - cleaning up...");
       stopStreamTracks(); // Ensure camera is off
@@ -260,14 +225,8 @@ function TestAnalysis() {
       ) {
         mediaRecorder.current.stop();
       }
-      // If previewing uploaded files with createObjectURL, revoke here:
-      // if (videoRef.current && videoRef.current.src.startsWith('blob:')) {
-      //   URL.revokeObjectURL(videoRef.current.src);
-      // }
     };
-  }, [stopStreamTracks]); // Add stopStreamTracks to dependency array
-
-  // --- Render Logic ---
+  }, [stopStreamTracks]);
 
   const renderFeedback = () => {
     if (status === "processing") {

@@ -1,6 +1,6 @@
 import React from "react";
-import "./LearnCommunication.css"; // Import CSS for styling
-import { useNavigate, Link } from "react-router-dom"; // Import useNavigate
+import "./LearnCommunication.css";
+import { useNavigate, Link } from "react-router-dom";
 
 function LearnCom() {
   const levels = [
@@ -16,7 +16,7 @@ function LearnCom() {
         "Introduction to Active Listening: Hearing vs. Understanding",
         "Basic Posture Awareness: Standing/Sitting Tall",
       ],
-      videoUrl: "https://youtu.be/2Lkb7OSRdGE?si=iWm-ppLvmpyqLW8H", // Example video URL
+      videoUrl: "https://youtu.be/2Lkb7OSRdGE?si=iWm-ppLvmpyqLW8H",
       materials: [
         { title: "Level 1 Guide (PDF)", url: "/assets/level1_guide.pdf" },
         {
@@ -148,10 +148,10 @@ function LearnCom() {
     },
   ];
 
-  const navigate = useNavigate(); // Get the navigate function
+  const navigate = useNavigate();
 
   const handleCardClick = (levelData) => {
-    navigate(`/level/${levelData.level}`, { state: levelData }); // Navigate to the level details page and pass data
+    navigate(`/level/${levelData.level}`, { state: levelData });
   };
 
   return (

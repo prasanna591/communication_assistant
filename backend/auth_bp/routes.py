@@ -1,10 +1,10 @@
 import os
 from flask import Blueprint, request, jsonify, session
 from flask_cors import CORS
-from models import db, User  # Import db and the User model
+from models import db, User  
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
-CORS(auth_bp) # Enable CORS for this blueprint
+CORS(auth_bp) 
 
 @auth_bp.route('/signup', methods=['POST'])
 def signup():
@@ -36,7 +36,7 @@ def login():
 
     user = User.query.filter_by(username=username).first()
     if user and user.check_password(password):
-        session['username'] = username  # Store username in session
+        session['username'] = username  
         return jsonify({'message': 'Login successful'}), 200
     else:
         return jsonify({'message': 'Invalid credentials'}), 401

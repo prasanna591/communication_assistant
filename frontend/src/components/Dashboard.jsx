@@ -131,7 +131,6 @@ const Dashboard = () => {
     );
   }
 
-  // Helper function (remains the same)
   const getLevelTitle = (level) => {
     if (level < 10) return "Beginner";
     if (level < 20) return "Novice";
@@ -152,12 +151,9 @@ const Dashboard = () => {
       userData.pacingScore) /
     4;
 
-  // Determine if dark mode is active (example logic)
-  // const containerClass = isDarkMode ? 'dashboard-container dark' : 'dashboard-container';
-  const containerClass = "dashboard-container"; // Add 'dark' class based on preference
+  const containerClass = "dashboard-container";
 
   return (
-    // Add 'dark' class here if implementing dark mode toggle
     <div className={containerClass}>
       <h1 className="dashboard-title">Welcome, {userData.name}!</h1>
 

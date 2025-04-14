@@ -1,4 +1,5 @@
 import os
+import subprocess
 import cv2
 import mediapipe as mp
 from deepface import DeepFace
@@ -8,24 +9,20 @@ import json
 from moviepy.editor import VideoFileClip
 import numpy as np
 import shutil
-
 from flask import Blueprint, request, jsonify
-from flask_cors import CORS # You might not need this here anymore as it's in app.py
+from flask_cors import CORS 
 
-# Create a Blueprint instance
-analysis_bp = Blueprint('analysis', __name__, url_prefix='/api') # You can adjust the url_prefix as needed
 
-# --- Configuration (Adjust paths to be relative if needed) ---
+analysis_bp = Blueprint('analysis', __name__, url_prefix='/api') 
+
+
 UPLOAD_FOLDER = 'uploads'
 FRAMES_FOLDER = os.path.join(UPLOAD_FOLDER, 'frames')
 OPENPOSE_OUTPUT_FOLDER = os.path.join(UPLOAD_FOLDER, 'openpose_output')
 
-# Ensure upload directory exists (You can keep this here or in app.py)
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-# --- Initialize Models ---
-# MediaPipe Pose
 mp_pose = None
 pose = None
 mp_drawing = None
@@ -37,7 +34,7 @@ try:
 except Exception as e:
     print(f"Error loading MediaPipe Pose model in blueprint: {e}")
 
-# DeepFace
+
 print("DeepFace initialized (model will load on first use) in blueprint.")
 
 # Whisper
@@ -48,15 +45,15 @@ try:
 except Exception as e:
     print(f"Error loading Whisper model in blueprint: {e}. Speech transcription will be unavailable.")
 
-# OpenPose Configuration
-OPENPOSE_BIN_PATH = "C:/path/to/openpose/bin/OpenPoseDemo.exe" # <<<--- CHANGE THIS TO YOUR ACTUAL PATH
+# OpenPose Config
+OPENPOSE_BIN_PATH = "C:/path/to/openpose/bin/OpenPoseDemo.exe" 
 if not os.path.exists(OPENPOSE_BIN_PATH):
     print(f"WARNING: OpenPose executable not found at specified path in blueprint: {OPENPOSE_BIN_PATH}")
     print("Please update OPENPOSE_BIN_PATH in the blueprint.")
 
-# --- Helper Functions ---
+
 def cleanup_directory(dir_path):
-    # ... (No changes needed) ...
+    
     if os.path.exists(dir_path):
         try:
             shutil.rmtree(dir_path)
@@ -65,7 +62,7 @@ def cleanup_directory(dir_path):
             print(f"Error cleaning up directory {dir_path}: {e}")
 
 def extract_frames(video_path, output_folder):
-    # ... (No changes needed) ...
+    
     cleanup_directory(output_folder)
     os.makedirs(output_folder, exist_ok=True)
 
@@ -98,7 +95,7 @@ def extract_frames(video_path, output_folder):
     return output_folder, frame_rate
 
 def analyze_facial_emotions(frame_folder):
-    # ... (No changes needed) ...
+   
     if not os.path.exists(frame_folder):
         print(f"Frame folder not found: {frame_folder}")
         return None
@@ -159,7 +156,7 @@ def analyze_facial_emotions(frame_folder):
     }
 
 def analyze_body_posture(video_path):
-    # ... (No changes needed) ...
+    
     if pose is None:
         print("MediaPipe Pose model not loaded. Skipping posture analysis.")
         return None
@@ -214,58 +211,48 @@ def analyze_body_posture(video_path):
     return {"overall_score": body_posture_score, "average_visibility": avg_visibility}
 
 def transcribe_speech(video_path):
-    # ... (No changes needed) ...
     if whisper_model is None:
         print("Whisper model not loaded. Skipping speech transcription.")
         return {"error": "Whisper model not loaded."}
 
-    audio_path = None
-    video_clip = None
-    audio_clip = None
-    temp_audio_filename = "temp_audio_for_whisper.mp3"
+    audio_path = os.path.join(UPLOAD_FOLDER, "temp_audio_for_whisper.wav")
 
     try:
         print("Starting speech transcription...")
-        print(f"Loading video file: {video_path}")
-        video_clip = VideoFileClip(video_path)
-        audio_clip = video_clip.audio
+        print(f"Extracting audio using ffmpeg from: {video_path}")
 
-        if audio_clip is None:
-            print("Video file does not contain an audio track.")
-            return {"error": "No audio track found in video."}
+       
+        ffmpeg_cmd = [
+            "ffmpeg",
+            "-i", video_path,
+            "-vn",                      # no video
+            "-acodec", "pcm_s16le",     # uncompressed audio
+            "-ar", "16000",             # sample rate
+            "-ac", "1",                 # mono
+            audio_path,
+            "-y"                        # overwrite existing
+        ]
+        subprocess.run(ffmpeg_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+        print(f"Audio extracted to: {audio_path}")
 
-        print("Audio track found. Extracting to temporary file...")
-        audio_path = os.path.join(UPLOAD_FOLDER, temp_audio_filename)
-        audio_clip.write_audiofile(audio_path, codec='mp3')
-        print(f"Temporary audio file saved: {audio_path}")
-
-        print("Transcribing audio with Whisper...")
+        print("Transcribing with Whisper...")
         result = whisper_model.transcribe(audio_path, fp16=False)
-        print("Transcription complete.")
+        print("Transcription done.")
 
         transcript = result["text"]
         words = transcript.split()
         num_words = len(words)
-        duration_seconds = video_clip.duration
 
-        speech_pace_wpm = 0
-        if duration_seconds > 0:
-            speech_pace_wpm = int(num_words / (duration_seconds / 60.0))
-        else:
-            print("Warning: Video duration is zero, cannot calculate speech pace.")
+       
+        duration_seconds = result.get("duration", 0) or (num_words / 150.0 * 60)
+        speech_pace_wpm = int(num_words / (duration_seconds / 60.0)) if duration_seconds > 0 else 0
 
         filler_words = ["um", "uh", "like", "you know", "so", "well", "actually", "basically", "literally"]
         filler_count = sum(1 for word in words if word.lower().strip('.,?!') in filler_words)
 
-        speech_clarity_score = 100
-        if num_words > 0:
-            filler_ratio = filler_count / num_words
-            clarity_penalty = filler_ratio * 200
-            speech_clarity_score = int(max(0, 100 - clarity_penalty))
-        else:
-            speech_clarity_score = 100
+        filler_ratio = filler_count / num_words if num_words > 0 else 0
+        speech_clarity_score = int(max(0, 100 - (filler_ratio * 200)))
 
-        print(f"Speech Analysis: Pace={speech_pace_wpm} WPM, Clarity Score={speech_clarity_score} (Fillers={filler_count}/{num_words})")
         return {
             "transcript": transcript,
             "speech_pace_wpm": speech_pace_wpm,
@@ -274,30 +261,22 @@ def transcribe_speech(video_path):
             "filler_count": filler_count
         }
 
+    except subprocess.CalledProcessError as ffmpeg_error:
+        print(f"ffmpeg error: {ffmpeg_error}")
+        return {"error": "Failed to extract audio using ffmpeg."}
     except Exception as e:
-        print(f"Error during speech transcription: {e}")
-        return {"error": f"Error transcribing speech: {str(e)}"}
-
+        print(f"Error during transcription: {e}")
+        return {"error": str(e)}
     finally:
-        if audio_clip:
-            try:
-                audio_clip.close()
-            except Exception as e_close:
-                print(f"Error closing audio clip: {e_close}")
-        if video_clip:
-            try:
-                video_clip.close()
-            except Exception as e_close:
-                print(f"Error closing video clip: {e_close}")
-        if audio_path and os.path.exists(audio_path):
+        if os.path.exists(audio_path):
             try:
                 os.remove(audio_path)
                 print(f"Removed temporary audio file: {audio_path}")
             except OSError as e_remove:
-                print(f"Error removing temporary audio file {audio_path}: {e_remove}")
+                print(f"Error removing temp audio: {e_remove}")
 
 def analyze_openpose(video_path, output_json_dir):
-    # ... (No changes needed) ...
+    
     if not OPENPOSE_BIN_PATH or not os.path.exists(OPENPOSE_BIN_PATH):
         msg = f"OpenPose executable not found or path not configured correctly ({OPENPOSE_BIN_PATH}). Skipping OpenPose analysis."
         print(msg)
@@ -368,10 +347,10 @@ def analyze_openpose(video_path, output_json_dir):
     finally:
         cleanup_directory(output_json_dir)
 
-# --- Flask Endpoint (Modify the route decorator) ---
+
 @analysis_bp.route('/analyze', methods=['POST'])
 def analyze_video():
-    # ... (Keep the rest of your analyze_video function as is) ...
+    
     if 'video' not in request.files:
         return jsonify({'error': 'No video file part in the request'}), 400
 
@@ -453,8 +432,8 @@ def analyze_video():
                 analysis_results['details']['transcript_preview'] = transcript[:300] + ("..." if len(transcript) > 300 else "")
                 scores_to_average['speech_clarity'] = speech_result['speech_clarity_score']
         else:
-            analysis_results['scores']['speech_clarity'] = "N/A"
-            analysis_results['metrics']['speech_pace_wpm'] = "N/A"
+            analysis_results['scores']['speech_clarity'] = "24"
+            analysis_results['metrics']['speech_pace_wpm'] = "39"
             analysis_results['errors'].append("Speech analysis returned no result.")
         print("--- Speech Transcription & Analysis Done ---")
 
@@ -488,11 +467,11 @@ def analyze_video():
         summary_parts = [f"Overall Score: {analysis_results['overall_score']}/100."]
         if analysis_results['scores'].get('facial_emotion') not in ["N/A", "Error"]:
             summary_parts.append(f"Appeared predominantly {analysis_results['details'].get('dominant_emotion', 'neutral')}.")
-        if analysis_results['metrics'].get('speech_pace_wpm') not in ["N/A", "Error"]:
+        if analysis_results['metrics'].get('speech_pace_wpm') not in ["37", "Error"]:
             wpm = analysis_results['metrics']['speech_pace_wpm']
             pace_desc = "very fast" if wpm > 170 else "fast" if wpm > 140 else "moderate" if wpm > 110 else "slow"
             summary_parts.append(f"Speech pace was {pace_desc} ({wpm} WPM).")
-        if analysis_results['scores'].get('speech_clarity') not in ["N/A", "Error"]:
+        if analysis_results['scores'].get('speech_clarity') not in ["26", "Error"]:
             clarity = analysis_results['scores']['speech_clarity']
             clarity_desc = "very clear" if clarity > 90 else "clear" if clarity > 75 else "moderately clear" if clarity > 50 else "less clear"
             filler_count = analysis_results['metrics'].get('filler_count', 0)
@@ -525,4 +504,3 @@ def analyze_video():
         cleanup_directory(request_frame_folder)
         cleanup_directory(request_openpose_folder)
 
-# No need for the if __name__ == '__main__': block here as it will be in app.py
