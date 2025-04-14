@@ -1,0 +1,150 @@
+/* General Styles */
+.homepage-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 90vh; /* Ensure it takes up most of the viewport height */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  color: #333;
+  padding: 0 20px; /* Add horizontal padding */
+}
+
+/* Hero Section Styles */
+.hero-section {
+  text-align: center;
+  padding: 60px 20px; /* More vertical padding */
+  width: 100%;
+  max-width: 800px; /* Limit width for readability */
+  margin-bottom: 40px; /* Space below hero */
+}
+
+.hero-headline {
+  font-size: 2.5rem; /* Larger headline */
+  font-weight: 700;
+  color: #2c3e50; /* Darker blue-gray */
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+
+.hero-subheadline {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 30px;
+  max-width: 600px; /* Limit subheadline width */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-image {
+  /* Optional styling for an image */
+  max-width: 300px;
+  height: auto;
+  margin-bottom: 30px;
+}
+
+/* Call-to-Action Button Styles */
+.cta-button {
+  display: inline-block; /* Important for padding/margin */
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #007bff; /* Primary blue */
+  border: none;
+  border-radius: 5px;
+  text-decoration: none; /* Remove underline from Link */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.cta-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Features Section Styles */
+.features-section {
+  padding: 40px 20px;
+  width: 100%;
+  max-width: 1000px; /* Wider section for features */
+  text-align: center;
+  background-color: #f8f9fa; /* Light background for contrast */
+  border-radius: 8px; /* Slightly rounded corners */
+  margin-bottom: 40px;
+}
+
+.features-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #343a40; /* Dark gray */
+  margin-bottom: 40px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 1fr)
+  ); /* Responsive grid */
+  gap: 30px; /* Space between feature items */
+}
+
+.feature-item {
+  padding: 20px;
+  background-color: #fff; /* White background for items */
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: transform 0.3s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-5px); /* Lift effect on hover */
+}
+
+.feature-icon {
+  /* Optional icon styling */
+  color: #007bff; /* Match CTA color */
+  margin-bottom: 15px;
+}
+
+.feature-item h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 10px;
+}
+
+.feature-item p {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+/* Footer Styles (Optional) */
+.homepage-footer {
+  margin-top: auto; /* Push footer to bottom if content is short */
+  padding: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #777;
+  width: 100%;
+  border-top: 1px solid #eee; /* Separator line */
+}
+
+/* Basic Responsiveness */
+@media (max-width: 768px) {
+  .hero-headline {
+    font-size: 2rem;
+  }
+  .hero-subheadline {
+    font-size: 1rem;
+  }
+  .cta-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+  .features-title {
+    font-size: 1.5rem;
+  }
+}

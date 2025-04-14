@@ -1,0 +1,261 @@
+/* TestAnalysis.css */
+.test-analysis-container {
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+}
+
+.analysis-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.analysis-header h1 {
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.analysis-header .subheader {
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.video-and-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.video-container {
+  position: relative;
+  width: 400px;
+  height: 300px;
+  background-color: #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.recording-indicator {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(255, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.blinking-circle {
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border-radius: 50%;
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.analysis-type-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.analysis-type-selector label {
+  font-weight: bold;
+  color: #555;
+}
+
+.analysis-type-selector .dropdown {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.record-upload-buttons {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.start-record-button {
+  background-color: #5cb85c;
+  color: white;
+}
+
+.stop-record-button {
+  background-color: #d9534f;
+  color: white;
+}
+
+.upload-button {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+.analyze-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.button:disabled,
+.dropdown:disabled {
+  background-color: #ddd;
+  color: #777;
+  cursor: not-allowed;
+}
+
+.feedback-area {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 600px;
+  text-align: left;
+}
+
+.feedback-area h2 {
+  color: #333;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.loading-indicator {
+  color: #007bff;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+.error-message {
+  color: #d9534f;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.info-message {
+  color: #777;
+  margin-top: 10px;
+}
+
+.feedback-results {
+  margin-top: 10px;
+}
+
+.feedback-summary {
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.detailed-scores {
+  list-style: none;
+  padding: 0;
+}
+
+.detailed-scores li {
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f9f9f9;
+  padding-bottom: 5px;
+}
+
+.detailed-scores li:last-child {
+  border-bottom: none;
+}
+
+.score-label {
+  font-weight: bold;
+  color: #444;
+}
+
+.score-value {
+  color: #666;
+}
+
+.transcript-preview {
+  margin-top: 20px;
+  border: 1px solid #eee;
+  padding: 15px;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.transcript-preview summary {
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.transcript-preview p {
+  white-space: pre-line;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.view-full-transcript-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.view-full-transcript-button:hover {
+  background-color: #0056b3;
+}

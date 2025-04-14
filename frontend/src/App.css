@@ -1,0 +1,229 @@
+/* Navbar.css */
+
+.navbar {
+  background-color: #333;
+  display: flex; /* Dark background for a professional look */
+  color: white;
+  justify-content: space-around;
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  justify-content: space-evenly; /* Center the links */
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  margin: 0 1.5rem; /* Space between links */
+}
+
+.nav-links li:first-child {
+  margin-left: 0;
+}
+
+.nav-links li:last-child {
+  margin-right: 0;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500; /* Medium font weight */
+  transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.nav-links a:hover {
+  color: #00bcd4; /* Accent color on hover */
+}
+
+/* Responsive adjustments (optional) */
+@media (max-width: 768px) {
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-links li {
+    margin: 0.5rem 0;
+  }
+}
+
+.auth-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.auth-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #555;
+}
+
+.form-group input {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+.input-error {
+  border-color: #e74c3c !important;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.form-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.forgot-password {
+  color: #4a90e2;
+  text-decoration: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.auth-button {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.auth-button:hover {
+  background-color: #3a7bc8;
+}
+
+.auth-button:disabled {
+  background-color: #a0c3e8;
+  cursor: not-allowed;
+}
+
+.message {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.message.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.auth-redirect {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.auth-redirect a {
+  color: #4a90e2;
+  text-decoration: none;
+}
+
+.auth-redirect a:hover {
+  text-decoration: underline;
+}
+
+/* Container for the auth buttons */
+.auth-btn {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+}
+
+/* Base styles for both buttons */
+.sign-btn,
+.login-btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+/* Specific styles for signup button */
+.sign-btn {
+  background-color: #4a90e2; /* Blue background */
+}
+
+.sign-btn:hover {
+  background-color: #357abd; /* Darker blue on hover */
+}
+
+/* Specific styles for login button */
+.login-btn {
+  background-color: #f5f5f5; /* Light gray background */
+  border: 1px solid #ddd;
+}
+
+.login-btn:hover {
+  background-color: #e5e5e5; /* Darker gray on hover */
+}
+
+/* This is the key part to fix your link styling */
+.sign-btn a,
+.login-btn a {
+  color: inherit; /* Inherit color from parent button */
+  text-decoration: none; /* Remove underline */
+  display: block;
+}
+
+.sign-btn a {
+  color: white;
+}
+
+.login-btn a {
+  color: #333;
+}
