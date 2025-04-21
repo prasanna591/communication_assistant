@@ -262,11 +262,12 @@ function TestAnalysis() {
               {analysisResult.scores?.body_posture_mediapipe ?? "N/A"}
             </li>
             <li>
-              Speech Pace Score: {analysisResult.scores?.speech_pace ?? "N/A"}
+              Speech Pace Score:{" "}
+              {analysisResult.metrics?.speech_pace_wpm ?? "N/A"}
             </li>
             <li>
-              Speech Clarity (Fillers) Score:{" "}
-              {analysisResult.scores?.speech_clarity_fillers ?? "N/A"}
+              Speech Clarity Score:{" "}
+              {analysisResult.scores?.speech_clarity ?? "N/A"}
             </li>
           </ul>
           {analysisResult.details?.transcript_preview && (
