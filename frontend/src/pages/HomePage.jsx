@@ -1,75 +1,85 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./HomePage.css";
+import "./HomePage.css"; // Keep your existing CSS file
+
 function HomePage() {
   return (
-    <>
-      <nav className="navbar">
-        <ul className="nav-links">
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/test-analysis">Test Analysis</Link>
-          </li>
-          <li>
-            <Link to="/learn">Learn</Link>
-          </li>
-        </ul>
-        <span className="auth-btn">
-          <button className="sign-btn">
-            <Link to="/signup">signup</Link>
-          </button>
-          <button className="login-btn">
-            <Link to="/login">login</Link>
-          </button>
-        </span>
-      </nav>
-      <div className="homepage-container">
-        <header className="hero-section">
-          <h1 className="hero-headline">
-            Face Your Interviews with AI-Powered Feedback
-          </h1>
-          <p className="hero-subheadline">
-            Practice your interview skills, get instant analysis on your
-            communication, body language, and confidence, and land your dream
-            job.
-          </p>
-          <br></br>
-          <br></br>
-          <Link to="/test-analysis" className="cta-button">
-            Start Your Analysis Now
+    <div className="home-page">
+      {/* Main navigation bar */}
+      <nav className="dashboard-navbar">
+        <div className="nav-container">
+          <Link to="/" className="logo">
+            AI Communication Coach
           </Link>
+          <ul className="nav-links">
+            <li>
+              <Link to="/dashboard" className="active">
+                Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link to="/test-analysis">Performance Analysis</Link>
+            </li>
+            <li>
+              <Link to="/learn">Learn & Improve</Link>
+            </li>
+          </ul>
+          <div className="auth-buttons">
+            <button className="logout-button">Logout</button>
+          </div>
+        </div>
+      </nav>
+
+      <div className="homepage-container">
+        {/* Hero section */}
+        <header className="hero-section">
+          <div className="hero-content">
+            <h1 className="hero-headline">
+              Master Communication for Interviews, Presentations, and Beyond
+            </h1>
+            <p className="hero-subheadline">
+              Unlock your full potential with AI-powered feedback on your
+              speaking skills, body language, and overall confidence for both
+              personal and professional growth.
+            </p>
+            <Link to="/test-analysis" className="cta-button">
+              Start Your Journey
+            </Link>
+          </div>
         </header>
 
+        {/* Features section */}
         <section className="features-section">
-          <h2 className="features-title">How Our Analysis Helps You</h2>
+          <h2 className="features-title">Enhance Your Communication Skills</h2>
           <div className="features-grid">
             <div className="feature-item">
-              <h3>Comprehensive Feedback</h3>
+              <h3>Identify Key Improvement Areas</h3>
               <p>
-                Receive detailed scores on speech pace, filler words, facial
-                expressions, and body posture.
+                Get detailed analysis on your voice clarity, speaking pace,
+                gestures, and eye contact, helping you focus on the most
+                impactful areas.
               </p>
             </div>
             <div className="feature-item">
-              <h3>Boost Confidence</h3>
+              <h3>Boost Confidence for Any Occasion</h3>
               <p>
-                Identify areas for improvement and practice until you feel
-                prepared and confident for any interview.
+                Practice in a safe, supportive environment, monitor your
+                progress over time, and gain the confidence you need for
+                interviews, presentations, and everyday conversations.
               </p>
             </div>
             <div className="feature-item">
-              <h3>AI-Driven Insights</h3>
+              <h3>Leverage Data-Driven Insights</h3>
               <p>
-                Leverage cutting-edge AI to understand how you come across and
-                make targeted improvements.
+                Our advanced AI technology offers objective feedback, giving you
+                actionable recommendations to continuously improve your
+                communication effectiveness.
               </p>
             </div>
           </div>
         </section>
       </div>
-    </>
+    </div>
   );
 }
 

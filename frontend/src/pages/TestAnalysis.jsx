@@ -286,18 +286,28 @@ function TestAnalysis() {
 
   return (
     <>
-      <nav className="navbar">
-        <ul className="nav-links">
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/test-analysis">Test Analysis</Link>
-          </li>
-          <li>
-            <Link to="/learn">Learn</Link>
-          </li>
-        </ul>
+      <nav className="dashboard-navbar">
+        <div className="nav-container">
+          <Link to="/" className="logo">
+            AI Communication Coach
+          </Link>
+          <ul className="nav-links">
+            <li>
+              <Link to="/dashboard" className="active">
+                Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link to="/test-analysis">Performance Analysis</Link>
+            </li>
+            <li>
+              <Link to="/learn">Learn & Improve</Link>
+            </li>
+          </ul>
+          <div className="auth-buttons">
+            <button className="logout-button">Logout</button>
+          </div>
+        </div>
       </nav>
       <div className="test-analysis-container">
         <h1> Analyze your Communication Skill</h1>

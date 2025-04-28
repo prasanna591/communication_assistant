@@ -1,0 +1,246 @@
+/* AnalysisUploader.css */
+
+/* Basic styling for the main container */
+.analysis-container {
+  padding: 20px;
+  font-family: "Arial", sans-serif; /* Using a common sans-serif font */
+  max-width: 800px; /* Limit the maximum width */
+  margin: 20px auto; /* Center the container and add some top/bottom margin */
+  border: 1px solid #ddd; /* Add a subtle border */
+  border-radius: 8px; /* Rounded corners */
+  background-color: #fff; /* White background */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  text-align: center; /* Center text content */
+}
+
+.analysis-container h1 {
+  color: #333; /* Dark grey color for heading */
+  margin-bottom: 20px;
+  font-size: 1.8em;
+}
+
+/* Style for the video preview container */
+.video-container {
+  position: relative; /* Needed for absolute positioning of indicator */
+  width: 100%; /* Take full width of its parent */
+  max-width: 600px; /* Limit max width */
+  margin: 0 auto 20px; /* Center and add bottom margin */
+  border: 1px solid #ccc; /* Border around the video area */
+  background-color: #000; /* Black background if video is not filling */
+  border-radius: 8px; /* Rounded corners */
+  overflow: hidden; /* Hide anything outside the border-radius */
+}
+
+/* Style for the video element itself */
+.video-preview {
+  display: block; /* Remove extra space below the video */
+  width: 100%; /* Make video fill the container width */
+  height: auto; /* Maintain aspect ratio */
+  /* Muted and playsInline are handled in React component */
+}
+
+/* Style for the recording indicator */
+.recording-indicator {
+  position: absolute; /* Position over the video */
+  top: 10px;
+  left: 10px;
+  background-color: rgba(255, 0, 0, 0.8); /* Semi-transparent red */
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-weight: bold;
+  z-index: 10; /* Ensure it's above the video */
+}
+
+/* Style for the controls area */
+.controls {
+  margin-bottom: 20px;
+  /* text-align: center; Handled in container */
+}
+
+/* Style for the analysis type selector div */
+.analysis-type-selector {
+  margin-bottom: 15px;
+}
+
+.analysis-type-selector label {
+  margin-right: 10px;
+  font-weight: bold;
+  color: #555;
+}
+
+/* Style for the select dropdown */
+.dropdown {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+  cursor: pointer;
+  outline: none; /* Remove default outline */
+  transition: border-color 0.2s ease-in-out; /* Smooth transition for border */
+}
+
+.dropdown:focus {
+  border-color: #007bff; /* Highlight on focus */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Add a subtle glow */
+}
+
+/* Style for buttons */
+.controls button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out; /* Smooth transitions */
+  margin: 5px; /* Add margin around buttons */
+}
+
+/* Specific button colors */
+.controls button:nth-of-type(1) {
+  /* Start/Stop Recording button */
+  background-color: #28a745; /* Green for Start */
+  color: white;
+}
+
+/* Color for Stop Recording state (handled by inline style in React based on status) */
+/* .controls button:nth-of-type(1)[disabled] { background-color: #dc3545; } /* Red for Stop - handled by inline style */
+
+.controls button:nth-of-type(2) {
+  /* Upload Video File button */
+  background-color: #007bff; /* Blue */
+  color: white;
+}
+
+.controls button:nth-of-type(3) {
+  /* Analyze Uploaded File button */
+  background-color: #ffc107; /* Yellow */
+  color: #212529; /* Dark text for contrast */
+}
+
+/* Disabled button state */
+.controls button:disabled {
+  opacity: 0.6; /* Make it semi-transparent */
+  cursor: not-allowed; /* Change cursor */
+}
+
+/* Hover effects for buttons */
+.controls button:not(:disabled):hover {
+  filter: brightness(90%); /* Slightly darken on hover */
+}
+
+/* Style for the file name display */
+.controls p {
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* Style for the feedback area */
+.feedback-area {
+  margin-top: 30px;
+  border-top: 1px solid #eee; /* Separator line */
+  padding-top: 20px;
+  text-align: left; /* Align feedback text to the left */
+}
+
+.feedback-area h2 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 1.5em;
+  text-align: center; /* Center the Feedback heading */
+}
+
+/* Style for the main feedback results container */
+.feedback-results {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 8px; /* Rounded corners */
+  background-color: #f9f9f9; /* Light grey background */
+  text-align: left; /* Ensure content is left-aligned */
+}
+
+.feedback-results h3 {
+  margin-top: 0;
+  color: #555;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.feedback-results strong {
+  display: block; /* Make summary bold text a block element */
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.feedback-results ul {
+  list-style: none; /* Remove default list bullets */
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.feedback-results ul li {
+  margin-bottom: 5px;
+  color: #444;
+  line-height: 1.4;
+}
+
+/* Style for the error message container */
+.error-message {
+  margin-top: 20px;
+  color: #dc3545; /* Red color */
+  border: 1px solid #dc3545; /* Red border */
+  padding: 15px;
+  border-radius: 8px; /* Rounded corners */
+  background-color: #f8d7da; /* Light red background */
+  text-align: left; /* Ensure error text is left-aligned */
+}
+
+.error-message p {
+  margin-top: 0;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.error-message pre {
+  white-space: pre-wrap; /* Wrap long text */
+  word-break: break-all; /* Break words if necessary */
+  margin: 0; /* Remove default margin */
+  font-size: 0.9em;
+}
+
+/* Style for the transcript details/summary */
+.feedback-results details {
+  margin-top: 10px;
+  border-top: 1px solid #eee; /* Separator */
+  padding-top: 10px;
+}
+
+.feedback-results summary {
+  cursor: pointer;
+  font-weight: bold;
+  color: #007bff; /* Blue color for summary */
+  outline: none; /* Remove default outline */
+}
+
+.feedback-results summary:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+.feedback-results details p {
+  margin-top: 5px;
+  font-style: italic;
+  color: #666;
+  font-size: 0.95em;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* Style for the initial message */
+.feedback-area p {
+  font-style: italic;
+  color: #888;
+  text-align: center;
+}

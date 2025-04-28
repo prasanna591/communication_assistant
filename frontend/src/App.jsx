@@ -1,9 +1,9 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import HomePage from "./pages/HomePage";
 import TestAnalysis from "./pages/TestAnalysis";
-import LearnCom from "./pages/learnCom";
+import LearnCom from "./pages/LearnCom";
 import LevelDetails from "./pages/LevelDetails";
 import Signup from "./components/Signup";
 import Login from "./components/Login";

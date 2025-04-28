@@ -1,24 +1,22 @@
-/* Navbar.css */
-
 .navbar {
   background-color: #333;
-  display: flex; /* Dark background for a professional look */
+  display: flex;
   color: white;
   justify-content: space-around;
   padding: 1rem 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .nav-links {
   list-style: none;
   display: flex;
-  justify-content: space-evenly; /* Center the links */
+  justify-content: space-evenly;
   margin: 0;
   padding: 0;
 }
 
 .nav-links li {
-  margin: 0 1.5rem; /* Space between links */
+  margin: 0 1.5rem;
 }
 
 .nav-links li:first-child {
@@ -32,15 +30,14 @@
 .nav-links a {
   color: white;
   text-decoration: none;
-  font-weight: 500; /* Medium font weight */
-  transition: color 0.3s ease; /* Smooth color transition */
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-  color: #00bcd4; /* Accent color on hover */
+  color: #00bcd4;
 }
 
-/* Responsive adjustments (optional) */
 @media (max-width: 768px) {
   .nav-links {
     flex-direction: column;
@@ -176,13 +173,11 @@
   text-decoration: underline;
 }
 
-/* Container for the auth buttons */
 .auth-btn {
   display: flex;
-  gap: 10px; /* Space between buttons */
+  gap: 10px;
 }
 
-/* Base styles for both buttons */
 .sign-btn,
 .login-btn {
   padding: 8px 16px;
@@ -193,30 +188,27 @@
   transition: all 0.3s ease;
 }
 
-/* Specific styles for signup button */
 .sign-btn {
-  background-color: #4a90e2; /* Blue background */
+  background-color: #4a90e2;
 }
 
 .sign-btn:hover {
-  background-color: #357abd; /* Darker blue on hover */
+  background-color: #357abd;
 }
 
-/* Specific styles for login button */
 .login-btn {
-  background-color: #f5f5f5; /* Light gray background */
+  background-color: #f5f5f5;
   border: 1px solid #ddd;
 }
 
 .login-btn:hover {
-  background-color: #e5e5e5; /* Darker gray on hover */
+  background-color: #e5e5e5;
 }
 
-/* This is the key part to fix your link styling */
 .sign-btn a,
 .login-btn a {
-  color: inherit; /* Inherit color from parent button */
-  text-decoration: none; /* Remove underline */
+  color: inherit;
+  text-decoration: none;
   display: block;
 }
 
